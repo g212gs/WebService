@@ -1,8 +1,8 @@
 //
 //  Constants.swift
-//  ConnectSocial
+//  WebService
 //
-//  Created by Yogesh Padekar on 8/21/17.
+//  Created by Gaurang Lathiya on 8/21/17.
 //  Copyright © 2017 Gaurang Lathiya. All rights reserved.
 //
 
@@ -83,9 +83,9 @@ class Constants: NSObject {
     
     static let kNoInterNetConnection =      "No Internet Connection."
     
-//    plist - Please allow location for make connect social account more secure.
-//    plist - connect social will use your location
-    static let kNoLocationInformation =      "Please allow location for make connect social account more secure. \n you can still enable it from settings menu"
+//    plist - Please allow location for make WebService account more secure.
+//    plist - WebService will use your location
+    static let kNoLocationInformation =      "Please allow location for make WebService account more secure. \n you can still enable it from settings menu"
 
     // Error
     static let kErrorNoGroupCoverPic         =   "Please select cover picture."

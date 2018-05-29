@@ -1,8 +1,8 @@
 //
 //  Utility.swift
-//  ConnectSocial
+//  WebService
 //
-//  Created by Yogesh Padekar on 8/21/17.
+//  Created by Gaurang Lathiya on 8/21/17.
 //  Copyright © 2017 Gaurang Lathiya. All rights reserved.
 //
 

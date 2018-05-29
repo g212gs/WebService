@@ -1,8 +1,8 @@
 //
 //  ReachabilityManager.swift
-//  ConnectSocial
+//  WebService
 //
-//  Created by Yogesh Padekar on 9/8/17.
+//  Created by Gaurang Lathiya on 9/8/17.
 //  Copyright © 2017 Gaurang Lathiya. All rights reserved.
 //
 

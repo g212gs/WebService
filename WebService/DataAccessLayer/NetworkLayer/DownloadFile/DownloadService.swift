@@ -1,8 +1,8 @@
 //
 //  DownloadService.swift
-//  ConnectSocial
+//  WebService
 //
-//  Created by Yogesh Padekar on 3/7/18.
+//  Created by Gaurang Lathiya on 3/7/18.
 //  Copyright © 2018 Gaurang Lathiya. All rights reserved.
 //
 

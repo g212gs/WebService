@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4521A007222A9E3400DF283B /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4521A005222A9E3400DF283B /* MimeType.swift */; };
+		4521A008222A9E3400DF283B /* Swime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4521A006222A9E3400DF283B /* Swime.swift */; };
+		4521A00C222AB5FF00DF283B /* ImageUploaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4521A00B222AB5FF00DF283B /* ImageUploaderScreen.swift */; };
 		45D23CE320BDD82400746A48 /* CountryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D23CE120BDD82400746A48 /* CountryInfo.swift */; };
 		45D23CE420BDD82400746A48 /* Translations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D23CE220BDD82400746A48 /* Translations.swift */; };
 		45EA9A9320B3328300C76756 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA9A9220B3328300C76756 /* AppDelegate.swift */; };
@@ -34,6 +37,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4521A005222A9E3400DF283B /* MimeType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
+		4521A006222A9E3400DF283B /* Swime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Swime.swift; sourceTree = "<group>"; };
+		4521A00B222AB5FF00DF283B /* ImageUploaderScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUploaderScreen.swift; sourceTree = "<group>"; };
 		45D23CE120BDD82400746A48 /* CountryInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryInfo.swift; sourceTree = "<group>"; };
 		45D23CE220BDD82400746A48 /* Translations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Translations.swift; sourceTree = "<group>"; };
 		45EA9A8F20B3328300C76756 /* WebService.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebService.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -82,6 +88,15 @@
 				5CAF1244BDB6D219620284D3 /* Pods_WebService.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4521A004222A9E2800DF283B /* Swime */ = {
+			isa = PBXGroup;
+			children = (
+				4521A005222A9E3400DF283B /* MimeType.swift */,
+				4521A006222A9E3400DF283B /* Swime.swift */,
+			);
+			path = Swime;
 			sourceTree = "<group>";
 		};
 		45D23CE020BDD80200746A48 /* country info */ = {
@@ -177,6 +192,7 @@
 		45EA9AAF20B334A400C76756 /* NetworkLayer */ = {
 			isa = PBXGroup;
 			children = (
+				4521A004222A9E2800DF283B /* Swime */,
 				45EA9AB020B334A400C76756 /* DownloadFile */,
 				45EA9AB520B334A400C76756 /* WebAPISession.swift */,
 			);
@@ -234,6 +250,7 @@
 				45EA9ACF20B33C5F00C76756 /* SplashScreen.swift */,
 				45EA9AD120B33C7300C76756 /* HomeScreen.swift */,
 				45EA9AD320B33E0C00C76756 /* CountrySelectionScreen.swift */,
+				4521A00B222AB5FF00DF283B /* ImageUploaderScreen.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -288,6 +305,7 @@
 				TargetAttributes = {
 					45EA9A8E20B3328300C76756 = {
 						CreatedOnToolsVersion = 9.3;
+						LastSwiftMigration = 1000;
 					};
 				};
 			};
@@ -374,14 +392,17 @@
 				45EA9AB820B334A400C76756 /* ResultType.swift in Sources */,
 				45EA9ACA20B33C3700C76756 /* Constants.swift in Sources */,
 				45EA9AD220B33C7300C76756 /* HomeScreen.swift in Sources */,
+				4521A00C222AB5FF00DF283B /* ImageUploaderScreen.swift in Sources */,
 				45EA9AD420B33E0C00C76756 /* CountrySelectionScreen.swift in Sources */,
 				45EA9ABB20B334A400C76756 /* DownloadService.swift in Sources */,
+				4521A007222A9E3400DF283B /* MimeType.swift in Sources */,
 				45EA9AAE20B3349200C76756 /* LocationManager.swift in Sources */,
 				45EA9A9320B3328300C76756 /* AppDelegate.swift in Sources */,
 				45EA9ABD20B334A400C76756 /* ReachabilityManager.swift in Sources */,
 				45EA9AAC20B3349200C76756 /* Extensions.swift in Sources */,
 				45EA9AD020B33C5F00C76756 /* SplashScreen.swift in Sources */,
 				45D23CE420BDD82400746A48 /* Translations.swift in Sources */,
+				4521A008222A9E3400DF283B /* Swime.swift in Sources */,
 				45EA9AB920B334A400C76756 /* DownloadTask.swift in Sources */,
 				45EA9AAD20B3349200C76756 /* Utility.swift in Sources */,
 				45D23CE320BDD82400746A48 /* CountryInfo.swift in Sources */,
@@ -542,7 +563,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = g212gs.WebService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -562,7 +583,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = g212gs.WebService;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

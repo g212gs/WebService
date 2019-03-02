@@ -14,8 +14,23 @@ import SwiftyJSON
 enum WSType: String {
     case GET = "GET"
     case POST = "POST"
-    case FORM_POST = "FORM_POST"
+//    case FORM_POST = "FORM_POST"
 }
+
+// Implemented this with reference of postman
+enum BodyType: String {
+    case none = "NONE" // No need to supply body
+    case multipart = "multipart/form-data"
+    case wwwFormUnreloaded = "application/x-www-form-urlencoded"
+    case binary = "BINARY" // handling is different way
+    case row_Text_Plain = "text/plain"
+    case row_Application_Json = "application/json"
+    case row_Application_Javascript = "application/javascript"
+    case row_Application_Xml = "application/xml"
+    case row_Text_Xml = "text/xml"
+    case row_Text_Html = "text/html"
+}
+
 
 // Development Webserver URL
 let serverURL: String = "http://www.google.com/"
@@ -26,6 +41,7 @@ let wsURL: String = serverURL + "api/"
 
 let kWserviceUrl_GetAllCountries: String = "https://ajayakv-rest-countries-v1.p.mashape.com/rest/v1/all"
 
+let kWserviceUrl_Image_Upload: String = "https://api.imgur.com/3/image"
 
 extension String {
     
@@ -79,11 +95,15 @@ class WebAPISession: URLSession {
     lazy var configurationCustom: URLSessionConfiguration = URLSessionConfiguration.default
     lazy var session: URLSession = URLSession(configuration: self.configurationCustom)
     
+//    let boundary_Mutltipart_FormData = "----WebServiceFormBoundary3BK3NRZMH5"
+    
+    let authorizationImgUR = "Bearer 37600b23cab1d7670961a6a6f78fb6fd6cf6d5ce"
+    
     typealias webServiceResponceHandler = ((JSON?, String?) -> Void)
     typealias webServiceRequestHandler = ((NSURLRequest?, String?) -> Void)
     
     // MARK: - Web Service Call Method
-    public func callWebAPI(wsType:WSType, webURLString: String, parameter: Dictionary<String, Any>, completion:
+    public func callWebAPI(wsType:WSType, bodyType: BodyType, filePathKey: String?, webURLString: String, parameter: Dictionary<String, Any>, completion:
         @escaping webServiceResponceHandler) {
         
         // Set up the URL request
@@ -124,49 +144,63 @@ class WebAPISession: URLSession {
             
             break
         case .POST:
-            // Set up the http body for URLRequest
-            self.preparePostParameters(parameter: parameter, urlRequest: urlRequest, completion: { (urlRequestObj, error) in
-                if error != nil {
-                    completion(nil, error)
-                }
-                else {
-                    urlRequest = urlRequestObj! as URLRequest
-                    
-                    self.webAPI(urlRequest: urlRequest) { (responce, error) in
-                        completion(responce, error)
+            switch bodyType {
+            case .row_Application_Json:
+                // Set up the http body for URLRequest
+                self.preparePostParameters(parameter: parameter, urlRequest: urlRequest, completion: { (urlRequestObj, error) in
+                    if error != nil {
+                        completion(nil, error)
                     }
+                    else {
+                        urlRequest = urlRequestObj! as URLRequest
+                        
+                        self.webAPI(urlRequest: urlRequest) { (responce, error) in
+                            completion(responce, error)
+                        }
+                    }
+                })
+                break
+            case .multipart:
+                let boundary = "Boundary-\(UUID().uuidString)"
+                urlRequest.setValue("\(bodyType.rawValue); boundary=\(boundary)"
+                    , forHTTPHeaderField: "Content-Type")
+                
+                // Specially for ImgUR request
+                urlRequest.setValue(authorizationImgUR, forHTTPHeaderField: "Authorization")
+                
+                urlRequest.httpBody = createMultiPartFormDataBody(parameters: parameter, boundary: boundary, filepath: filePathKey)
+                
+//                let videoURLPath: URL = parameter[Constants.kVideoAssetUrlString] as! URL
+//                do {
+//                    let data = try Data(contentsOf: videoURLPath, options: NSData.ReadingOptions.alwaysMapped)
+//
+//                    var dictRequestParam = parameter
+//
+//                    dictRequestParam.removeValue(forKey: Constants.kVideoAssetUrlString)
+//
+//                    let swimeObj: MimeType = Swime.mimeType(data: data)!
+//
+//                    // set the content-length
+//                    urlRequest.setValue("\(data.count)", forHTTPHeaderField:"Content-Length")
+//                    urlRequest.httpBody = createBody(parameters: dictRequestParam,
+//                                                     boundary: boundary,
+//                                                     data: data,
+//                                                     mimeType: swimeObj.mime,
+//                                                     filename: videoURLPath.lastPathComponent)
+//                }catch let error as NSError {
+//                    completion(nil, error.localizedDescription)
+//                }
+                
+                self.webAPI(urlRequest: urlRequest) { (responce, error) in
+                    completion(responce, error)
                 }
-            })
-            break
-        case .FORM_POST:
-            let boundary = "Boundary-\(UUID().uuidString)"
-            urlRequest.setValue("multipart/form-data; boundary=\(boundary)"
-                , forHTTPHeaderField: "Content-Type")
-            
-            let videoURLPath: URL = parameter[Constants.kVideoAssetUrlString] as! URL
-            do {
-                let data = try Data(contentsOf: videoURLPath, options: NSData.ReadingOptions.alwaysMapped)
-
-                var dictRequestParam = parameter
-
-                dictRequestParam.removeValue(forKey: Constants.kVideoAssetUrlString)
-                // set the content-length
-                urlRequest.setValue("\(data.count)", forHTTPHeaderField:"Content-Length")
-                urlRequest.httpBody = createBody(parameters: dictRequestParam,
-                                                 boundary: boundary,
-                                                 data: data,
-                                                 mimeType: "video/mp4",
-                                                 filename: videoURLPath.lastPathComponent)
-            }catch let error as NSError {
-                completion(nil, error.localizedDescription)
+            default:
+                break
             }
-            
-            self.webAPI(urlRequest: urlRequest) { (responce, error) in
-                completion(responce, error)
-            }
-            break
         }
     }
+    
+    
     
     // MARK: - Web Service Engine
     func webAPI(urlRequest: URLRequest, completion: @escaping webServiceResponceHandler) {
@@ -268,6 +302,111 @@ class WebAPISession: URLSession {
         body.append(data)
         body.appendString("\r\n")
         body.appendString("--".appending(boundary.appending("--")))
+        
+        return body as Data
+    }
+    
+    
+    func createMultiPartFormDataBody(parameters: [String: Any],
+                                     boundary: String,
+                                     filepath: String?) -> Data {
+        
+        let body = NSMutableData()
+        let boundaryPrefix = "--\(boundary)\r\n"
+        
+        if let fileContentKey = filepath {
+            for (key,value) in parameters {
+                
+                body.appendString(boundaryPrefix)
+                body.appendString("Content-Disposition: form-data; name=\(key)")
+                
+                if fileContentKey == key {
+                    do {
+                        if let filePathURL = value as? String, let assetURL = URL(string: filePathURL) {
+                            let data = try Data(contentsOf: assetURL, options: NSData.ReadingOptions.alwaysMapped)
+                            
+                            var contentType = "image/jpeg"
+                            if let swimeObj: MimeType = Swime.mimeType(data: data) {
+                                contentType = swimeObj.mime
+                            }
+                            let fileName = (value as! NSString).lastPathComponent
+                            
+                            body.appendString("; filename=\"\(fileName)\"\r\n")
+                            body.appendString("Content-Type: \(contentType)\r\n\r\n")
+                            body.append(data)
+                            body.appendString("\r\n")
+                            body.appendString("--".appending(boundary.appending("--")))
+                        }
+                    } catch let error {
+                        // contents could not be loaded
+                        print("Error while fetch file: \(error.localizedDescription)")
+                    }
+                } else {
+                    // for other value
+                    body.appendString("\r\n\r\n\(value)")
+                }
+            }
+        } else {
+            for (key,value) in parameters {
+                body.appendString(boundaryPrefix)
+                body.appendString("Content-Disposition: form-data; name=\(key)")
+                body.appendString("\r\n\r\n\(value)")
+            }
+            
+        }
+        
+        
+        
+        for (key,value) in parameters {
+
+            
+            body.appendString(boundaryPrefix)
+            body.appendString("Content-Disposition: form-data; name=\(key)")
+            
+            if let fileContentKey = filepath, fileContentKey == key {
+                do {
+                    
+//                     let photoURL = URL.init(fileURLWithPath: filePathURL)
+                    
+//                    if let filePathURL = value as? String, let assetURL = URL(string: filePathURL) {
+                    if let filePathURL = value as? String {
+                        let assetURL = URL.init(fileURLWithPath: filePathURL)
+                        
+                        let data = try Data(contentsOf: assetURL, options: NSData.ReadingOptions.alwaysMapped)
+                        
+//                        let fileContent = try String(contentsOfFile: value as! String, encoding: String.Encoding.utf8)
+//                        let dataStr = try String(contentsOfFile: filePathURL, encoding: String.Encoding.utf8)
+
+                        let strBase64 = data.base64EncodedString(options: .lineLength64Characters)
+                        
+                        var contentType = "image/jpeg"
+                        if let swimeObj: MimeType = Swime.mimeType(data: data) {
+                            contentType = swimeObj.mime
+                        }
+                        let fileName = (value as! NSString).lastPathComponent
+                        
+                        body.appendString("; filename=\"\(fileName)\"\r\n")
+                        body.appendString("Content-Type: \(contentType)\r\n\r\n")
+//                        body.append(data)
+                        body.appendString(strBase64)
+                        body.appendString("\r\n")
+                        body.appendString("--".appending(boundary.appending("--")))
+                    }
+                } catch let error {
+                    // contents could not be loaded
+                    print("Error while fetch file: \(error.localizedDescription)")
+                }
+            } else {
+                // for other value
+                body.appendString("\r\n\r\n\(value)")
+            }
+            
+//                                let fileContent = try String(contentsOfFile: value as! String, encoding: String.Encoding.utf8)
+            //                    print(fileContent)
+            
+            //                    URL(string: String)
+        }
+        
         
         return body as Data
     }

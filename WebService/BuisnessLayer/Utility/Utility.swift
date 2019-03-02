@@ -55,7 +55,7 @@ class Utility: NSObject {
 
     ///saves the image to the document directory with image name. funaction returns full image path including document directory
     static func saveImage(imagetoConvert image: UIImage, name imageName :String) -> String{
-        let imageData: Data? = UIImageJPEGRepresentation(image, 1.0)
+        let imageData: Data? = image.jpegData(compressionQuality: 1.0)
         let fileManager = FileManager.default
         var paths: [Any] = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory: String? = (paths[0] as? String)

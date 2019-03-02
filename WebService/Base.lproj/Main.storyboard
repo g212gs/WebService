@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FQz-Me-AAW">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="FQz-Me-AAW">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GfE-dg-UIJ">
-                                <rect key="frame" x="177" y="323" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -37,6 +37,52 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="799" y="-419"/>
+        </scene>
+        <!--Image Uploader Screen-->
+        <scene sceneID="mIw-ea-ewK">
+            <objects>
+                <viewController storyboardIdentifier="ImageUploaderScreen" id="lKx-cU-b9t" customClass="ImageUploaderScreen" customModule="WebService" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sh7-JP-H7W">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FzK-HB-t3Y">
+                                <rect key="frame" x="40" y="567" width="295" height="40"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="RKH-WD-09h"/>
+                                </constraints>
+                                <state key="normal" title="Select Image"/>
+                                <connections>
+                                    <action selector="btnSelectImageClicked:" destination="lKx-cU-b9t" eventType="touchUpInside" id="y3w-6W-sxs"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iDn-Uq-2Oj">
+                                <rect key="frame" x="40" y="186" width="295" height="295"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="iDn-Uq-2Oj" secondAttribute="height" multiplier="1:1" id="eLS-Mu-1gg"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="AHo-oe-JbJ" firstAttribute="trailing" secondItem="FzK-HB-t3Y" secondAttribute="trailing" constant="40" id="FOn-Oo-rXG"/>
+                            <constraint firstItem="AHo-oe-JbJ" firstAttribute="bottom" secondItem="FzK-HB-t3Y" secondAttribute="bottom" constant="60" id="T4U-Gv-ZuR"/>
+                            <constraint firstItem="iDn-Uq-2Oj" firstAttribute="centerY" secondItem="sh7-JP-H7W" secondAttribute="centerY" id="TW5-3x-Jpt"/>
+                            <constraint firstItem="iDn-Uq-2Oj" firstAttribute="leading" secondItem="AHo-oe-JbJ" secondAttribute="leading" constant="40" id="XUs-xs-prw"/>
+                            <constraint firstItem="AHo-oe-JbJ" firstAttribute="trailing" secondItem="iDn-Uq-2Oj" secondAttribute="trailing" constant="40" id="hnT-aS-bc6"/>
+                            <constraint firstItem="FzK-HB-t3Y" firstAttribute="leading" secondItem="AHo-oe-JbJ" secondAttribute="leading" constant="40" id="m8N-72-B03"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="AHo-oe-JbJ"/>
+                    </view>
+                    <connections>
+                        <outlet property="btnSelectImage" destination="FzK-HB-t3Y" id="Y0B-dc-lnk"/>
+                        <outlet property="imgView" destination="iDn-Uq-2Oj" id="4SR-1N-ioq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Tn2-wc-MA9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1469.5999999999999" y="-1083.5082458770617"/>
         </scene>
         <!--Home Screen-->
         <scene sceneID="4oG-jw-HXc">
@@ -56,7 +102,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="N/A" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lvq-YO-jed">
-                                <rect key="frame" x="20" y="324" width="335" height="20.5"/>
+                                <rect key="frame" x="20" y="323.5" width="335" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

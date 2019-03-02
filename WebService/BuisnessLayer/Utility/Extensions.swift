@@ -19,12 +19,12 @@ extension UIApplication {
 }
 
 extension UIAlertAction {
-    convenience init(title: String?, style: UIAlertActionStyle, image: UIImage, handler: ((UIAlertAction) -> Void)? = nil) {
+    convenience init(title: String?, style: UIAlertAction.Style, image: UIImage, handler: ((UIAlertAction) -> Void)? = nil) {
         self.init(title: title, style: style, handler: handler)
         self.actionImage = image
     }
     
-    convenience init?(title: String?, style: UIAlertActionStyle, imageNamed imageName: String, handler: ((UIAlertAction) -> Void)? = nil) {
+    convenience init?(title: String?, style: UIAlertAction.Style, imageNamed imageName: String, handler: ((UIAlertAction) -> Void)? = nil) {
         if let image = UIImage(named: imageName) {
             self.init(title: title, style: style, image: image, handler: handler)
         } else {
@@ -171,7 +171,7 @@ extension UIButton {
 extension UIImage {
     func getBase64() -> String? {
 //        let imageData = UIImagePNGRepresentation(self)
-        let imageData = UIImageJPEGRepresentation(self, 0.8)
+        let imageData = self.jpegData(compressionQuality: 0.8)
         return (imageData?.base64EncodedString(options: .lineLength64Characters))
     }
 }
@@ -287,7 +287,7 @@ extension UIView {
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.strokeColor = color.cgColor
         shapeLayer.lineWidth = 1
-        shapeLayer.lineJoin = kCALineJoinRound
+        shapeLayer.lineJoin = CAShapeLayerLineJoin.round
         shapeLayer.lineDashPattern = [4, 4]
         
         let path = CGMutablePath()
@@ -426,7 +426,7 @@ extension String {
 
 extension NSMutableAttributedString {
     @discardableResult func bold(_ text:String) -> NSMutableAttributedString {
-        let attrs:[NSAttributedStringKey : Any] = [.font : Constants.AppBoldFontWithSize(size: 14),
+        let attrs:[NSAttributedString.Key : Any] = [.font : Constants.AppBoldFontWithSize(size: 14),
                                         .foregroundColor : UIColor.black]
         let boldString = NSMutableAttributedString(string:"\(text)", attributes:attrs)
         self.append(boldString)
@@ -434,7 +434,7 @@ extension NSMutableAttributedString {
     }
     
     @discardableResult func normal(_ text:String)->NSMutableAttributedString {
-        let attrs:[NSAttributedStringKey : Any] = [.font : Constants.AppLightFontWithSize(size: 14),
+        let attrs:[NSAttributedString.Key : Any] = [.font : Constants.AppLightFontWithSize(size: 14),
                                         .foregroundColor : UIColor.darkGray]
         let normal = NSMutableAttributedString(string:"\(text)", attributes:attrs)
         self.append(normal)
@@ -547,7 +547,7 @@ extension URL {
             let asset = AVURLAsset(url: self , options: nil)
             let imgGenerator = AVAssetImageGenerator(asset: asset)
             imgGenerator.appliesPreferredTrackTransform = true
-            let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(1, 1), actualTime: nil)
+            let cgImage = try imgGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 1), actualTime: nil)
             let thumbnail = UIImage(cgImage: cgImage)
             return thumbnail
         } catch let error {
@@ -567,7 +567,7 @@ extension URL {
                     let asset = AVURLAsset(url: self , options: nil)
                     let imgGenerator = AVAssetImageGenerator(asset: asset)
                     imgGenerator.appliesPreferredTrackTransform = true
-                    try cgImage = imgGenerator.copyCGImage(at: CMTimeMake(1, 1), actualTime: nil)
+                    try cgImage = imgGenerator.copyCGImage(at: CMTimeMake(value: 1, timescale: 1), actualTime: nil)
                 } catch {
                     print("Failed")
                 }

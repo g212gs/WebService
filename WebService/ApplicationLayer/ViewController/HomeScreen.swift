@@ -20,7 +20,7 @@ class HomeScreen: UIViewController, CountrySelectionScreenDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.title = "Your Country"
+        self.setNavigationBar()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -31,6 +31,25 @@ class HomeScreen: UIViewController, CountrySelectionScreenDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func setNavigationBar() {
+        self.title = "Your Country"
+        
+        self.navigationItem.setRightBarButtonItems([], animated: true)
+        
+        let rightBarButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(btnCameraClicked))
+        rightBarButton.tintColor = UIColor.black
+        self.navigationItem.setRightBarButton(rightBarButton, animated: true)
+    }
+    
+    // MARK: - Bar Button item click events
+    @objc func btnCameraClicked() {
+        print("Camera clicked...")
+        
+        if let imageUploaderScreenObj: ImageUploaderScreen = self.storyboard?.instantiateViewController(withIdentifier: String(describing: ImageUploaderScreen.self)) as? ImageUploaderScreen {
+            self.navigationController?.pushViewController(imageUploaderScreenObj, animated: true)
+        }
     }
     
     @IBAction func getCountry(_ sender: UIButton) {

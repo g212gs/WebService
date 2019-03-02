@@ -254,7 +254,7 @@ class CountrySelectionScreen: UITableViewController {
         }
         self.selectedCountryId =  Int(countryInfoObj.numericCode ?? "0")
         self.tableView.reloadSections(IndexSet(integersIn: 0...0)
-            , with: UITableViewRowAnimation.none)
+            , with: UITableView.RowAnimation.none)
     }
     
     
@@ -262,7 +262,7 @@ class CountrySelectionScreen: UITableViewController {
     func startProgessHUD() {
         self.navigationItem.setRightBarButtonItems([], animated: true)
         
-        let activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .white)
+        let activityIndicatorView = UIActivityIndicatorView(style: .white)
         activityIndicatorView.hidesWhenStopped = true
         activityIndicatorView.startAnimating()
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: activityIndicatorView)
@@ -286,7 +286,7 @@ class CountrySelectionScreen: UITableViewController {
         }
         
         let webAPIsessionObj: WebAPISession = WebAPISession()
-        webAPIsessionObj.callWebAPI(wsType: .GET, webURLString: kWserviceUrl_GetAllCountries
+        webAPIsessionObj.callWebAPI(wsType: .GET, bodyType: .row_Application_Json, filePathKey: nil, webURLString: kWserviceUrl_GetAllCountries
         , parameter: dictParameter) { (response, error) in
             
             DispatchQueue.main.async {

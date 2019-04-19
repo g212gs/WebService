@@ -89,6 +89,31 @@ extension NSMutableData {
     }
 }
 
+// MARK:- Add support for "application/x-www-form-urlencoded"
+extension URLRequest {
+    
+    private func percentEscapeString(_ string: String) -> String {
+        var characterSet = CharacterSet.alphanumerics
+        characterSet.insert(charactersIn: "-._* ")
+        
+        return string
+            .addingPercentEncoding(withAllowedCharacters: characterSet)!
+            .replacingOccurrences(of: " ", with: "+")
+            .replacingOccurrences(of: " ", with: "+", options: [], range: nil)
+    }
+    
+    mutating func encodeParameters(parameters: [String : String]) {
+        httpMethod = "POST"
+        
+        let parameterArray = parameters.map { (arg) -> String in
+            let (key, value) = arg
+            return "\(key)=\(self.percentEscapeString(value))"
+        }
+        
+        httpBody = parameterArray.joined(separator: "&").data(using: String.Encoding.utf8)
+    }
+}
+
 
 class WebAPISession: URLSession {
     
@@ -118,11 +143,13 @@ class WebAPISession: URLSession {
         urlRequest.httpMethod = wsType.rawValue.replacingOccurrences(of: "FORM_", with: "")
         
         urlRequest.setValue("Keep-Alive", forHTTPHeaderField: "Connection")
-        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.addValue(Constants.kMashape_Key, forHTTPHeaderField: "X-Mashape-Key")
         
         switch wsType {
         case .GET:
+            urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            
             var webURLString_v1 = webURLString
 
             // Set up the Web URL for URLRequest for GET
@@ -147,6 +174,8 @@ class WebAPISession: URLSession {
             switch bodyType {
             case .row_Application_Json:
                 // Set up the http body for URLRequest
+                urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
+                
                 self.preparePostParameters(parameter: parameter, urlRequest: urlRequest, completion: { (urlRequestObj, error) in
                     if error != nil {
                         completion(nil, error)
@@ -170,26 +199,13 @@ class WebAPISession: URLSession {
                 
                 urlRequest.httpBody = createMultiPartFormDataBody(parameters: parameter, boundary: boundary, filepath: filePathKey)
                 
-//                let videoURLPath: URL = parameter[Constants.kVideoAssetUrlString] as! URL
-//                do {
-//                    let data = try Data(contentsOf: videoURLPath, options: NSData.ReadingOptions.alwaysMapped)
-//
-//                    var dictRequestParam = parameter
-//
-//                    dictRequestParam.removeValue(forKey: Constants.kVideoAssetUrlString)
-//
-//                    let swimeObj: MimeType = Swime.mimeType(data: data)!
-//
-//                    // set the content-length
-//                    urlRequest.setValue("\(data.count)", forHTTPHeaderField:"Content-Length")
-//                    urlRequest.httpBody = createBody(parameters: dictRequestParam,
-//                                                     boundary: boundary,
-//                                                     data: data,
-//                                                     mimeType: swimeObj.mime,
-//                                                     filename: videoURLPath.lastPathComponent)
-//                }catch let error as NSError {
-//                    completion(nil, error.localizedDescription)
-//                }
+                self.webAPI(urlRequest: urlRequest) { (responce, error) in
+                    completion(responce, error)
+                }
+            case .wwwFormUnreloaded:
+                urlRequest.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+                
+                urlRequest.encodeParameters(parameters: parameter as! [String : String])
                 
                 self.webAPI(urlRequest: urlRequest) { (responce, error) in
                     completion(responce, error)
@@ -250,6 +266,23 @@ class WebAPISession: URLSession {
                             }
                         }
                         break
+                        // Encoder and  decoder with Codable way
+//                        do {
+//                            let decoder = JSONDecoder()
+//                            let arrCountry = try decoder.decode([CountryDetail].self, from: responseData)
+//
+//                            if let firstCountry = arrCountry.first {
+//                                let encoder = JSONEncoder()
+//                                let productJSON = try encoder.encode(firstCountry)
+//                                print("parsedJSON: \(productJSON)")
+//                            }
+//
+//                            print("First country details: \(String(describing: arrCountry.first))")
+//                            //                            print(response) //Output - EMT
+//                        }  catch let parsingError {
+//                            print("Error", parsingError.localizedDescription)
+//                        }
+                        
                     default:
                         do {
                             let json = try JSON(data: responseData)
@@ -355,57 +388,55 @@ class WebAPISession: URLSession {
             
         }
         
-        
-        
-        for (key,value) in parameters {
-
-            
-            body.appendString(boundaryPrefix)
-            body.appendString("Content-Disposition: form-data; name=\(key)")
-            
-            if let fileContentKey = filepath, fileContentKey == key {
-                do {
-                    
-//                     let photoURL = URL.init(fileURLWithPath: filePathURL)
-                    
-//                    if let filePathURL = value as? String, let assetURL = URL(string: filePathURL) {
-                    if let filePathURL = value as? String {
-                        let assetURL = URL.init(fileURLWithPath: filePathURL)
-                        
-                        let data = try Data(contentsOf: assetURL, options: NSData.ReadingOptions.alwaysMapped)
-                        
-//                        let fileContent = try String(contentsOfFile: value as! String, encoding: String.Encoding.utf8)
-//                        let dataStr = try String(contentsOfFile: filePathURL, encoding: String.Encoding.utf8)
-
-                        let strBase64 = data.base64EncodedString(options: .lineLength64Characters)
-                        
-                        var contentType = "image/jpeg"
-                        if let swimeObj: MimeType = Swime.mimeType(data: data) {
-                            contentType = swimeObj.mime
-                        }
-                        let fileName = (value as! NSString).lastPathComponent
-                        
-                        body.appendString("; filename=\"\(fileName)\"\r\n")
-                        body.appendString("Content-Type: \(contentType)\r\n\r\n")
-//                        body.append(data)
-                        body.appendString(strBase64)
-                        body.appendString("\r\n")
-                        body.appendString("--".appending(boundary.appending("--")))
-                    }
-                } catch let error {
-                    // contents could not be loaded
-                    print("Error while fetch file: \(error.localizedDescription)")
-                }
-            } else {
-                // for other value
-                body.appendString("\r\n\r\n\(value)")
-            }
-            
-//                                let fileContent = try String(contentsOfFile: value as! String, encoding: String.Encoding.utf8)
-            //                    print(fileContent)
-            
-            //                    URL(string: String)
-        }
+//        for (key,value) in parameters {
+//
+//
+//            body.appendString(boundaryPrefix)
+//            body.appendString("Content-Disposition: form-data; name=\(key)")
+//
+//            if let fileContentKey = filepath, fileContentKey == key {
+//                do {
+//
+////                     let photoURL = URL.init(fileURLWithPath: filePathURL)
+//
+////                    if let filePathURL = value as? String, let assetURL = URL(string: filePathURL) {
+//                    if let filePathURL = value as? String {
+//                        let assetURL = URL.init(fileURLWithPath: filePathURL)
+//
+//                        let data = try Data(contentsOf: assetURL, options: NSData.ReadingOptions.alwaysMapped)
+//
+////                        let fileContent = try String(contentsOfFile: value as! String, encoding: String.Encoding.utf8)
+////                        let dataStr = try String(contentsOfFile: filePathURL, encoding: String.Encoding.utf8)
+//
+//                        let strBase64 = data.base64EncodedString(options: .lineLength64Characters)
+//
+//                        var contentType = "image/jpeg"
+//                        if let swimeObj: MimeType = Swime.mimeType(data: data) {
+//                            contentType = swimeObj.mime
+//                        }
+//                        let fileName = (value as! NSString).lastPathComponent
+//
+//                        body.appendString("; filename=\"\(fileName)\"\r\n")
+//                        body.appendString("Content-Type: \(contentType)\r\n\r\n")
+////                        body.append(data)
+//                        body.appendString(strBase64)
+//                        body.appendString("\r\n")
+//                        body.appendString("--".appending(boundary.appending("--")))
+//                    }
+//                } catch let error {
+//                    // contents could not be loaded
+//                    print("Error while fetch file: \(error.localizedDescription)")
+//                }
+//            } else {
+//                // for other value
+//                body.appendString("\r\n\r\n\(value)")
+//            }
+//
+////                                let fileContent = try String(contentsOfFile: value as! String, encoding: String.Encoding.utf8)
+//            //                    print(fileContent)
+//
+//            //                    URL(string: String)
+//        }
         
         
         return body as Data

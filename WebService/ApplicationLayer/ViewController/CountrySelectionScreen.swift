@@ -92,6 +92,15 @@ class CountrySelectionScreen: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        var safeAreaBottom: CGFloat = 0.0
+        if #available(iOS 11.0, *) {
+            safeAreaBottom = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+        }
+        
+        tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: safeAreaBottom, right: 0.0);
+//        tableView.contentLayoutGuide.bottomAnchor = self.bottomLayoutGuide.bottomAnchor
+        
+        
         self.navigationItem.setHidesBackButton(false, animated: false)
         self.initUI()
     }
@@ -172,7 +181,7 @@ class CountrySelectionScreen: UITableViewController {
             // For set the tick color
             self.tableView.tintColor = UIColor.black
             
-            self.view.backgroundColor = UIColor.white
+//            self.view.backgroundColor = UIColor.white
             
             self.configureSearchBar()
             

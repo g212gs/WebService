@@ -222,7 +222,7 @@ class WebAPISession: URLSession {
     func webAPI(urlRequest: URLRequest, completion: @escaping webServiceResponceHandler) {
         
         // Check internet
-        if ReachabilityManager.shared.reachability.connection != .none {
+        if ReachabilityManager.shared.reachabilityStatus != .unavailable {
             
             DispatchQueue.main.async {
                 UIApplication.shared.isNetworkActivityIndicatorVisible = true

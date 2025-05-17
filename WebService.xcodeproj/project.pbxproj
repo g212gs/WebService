@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		451A5D002DD86B9F0004823A /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 451A5CFF2DD86B9F0004823A /* SwiftyJSON */; };
+		451A5D032DD86C1E0004823A /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 451A5D022DD86C1E0004823A /* Reachability */; };
 		4521A007222A9E3400DF283B /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4521A005222A9E3400DF283B /* MimeType.swift */; };
 		4521A008222A9E3400DF283B /* Swime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4521A006222A9E3400DF283B /* Swime.swift */; };
 		4521A00C222AB5FF00DF283B /* ImageUploaderScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4521A00B222AB5FF00DF283B /* ImageUploaderScreen.swift */; };
@@ -33,7 +35,6 @@
 		45EA9AD020B33C5F00C76756 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA9ACF20B33C5F00C76756 /* SplashScreen.swift */; };
 		45EA9AD220B33C7300C76756 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA9AD120B33C7300C76756 /* HomeScreen.swift */; };
 		45EA9AD420B33E0C00C76756 /* CountrySelectionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45EA9AD320B33E0C00C76756 /* CountrySelectionScreen.swift */; };
-		B705FDA5760A94A3CC602203 /* Pods_WebService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CAF1244BDB6D219620284D3 /* Pods_WebService.framework */; };
 		C9FF7F3C2269F14700D7565E /* CountryDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FF7F3B2269F14700D7565E /* CountryDetail.swift */; };
 /* End PBXBuildFile section */
 
@@ -66,9 +67,6 @@
 		45EA9ACF20B33C5F00C76756 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		45EA9AD120B33C7300C76756 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		45EA9AD320B33E0C00C76756 /* CountrySelectionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountrySelectionScreen.swift; sourceTree = "<group>"; };
-		5CAF1244BDB6D219620284D3 /* Pods_WebService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WebService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A9FF3578B50DA948BB7670BA /* Pods-WebService.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebService.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebService/Pods-WebService.release.xcconfig"; sourceTree = "<group>"; };
-		C66573313EA1C0CDDDE7C5D5 /* Pods-WebService.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebService.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WebService/Pods-WebService.debug.xcconfig"; sourceTree = "<group>"; };
 		C9FF7F3B2269F14700D7565E /* CountryDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CountryDetail.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,21 +75,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B705FDA5760A94A3CC602203 /* Pods_WebService.framework in Frameworks */,
+				451A5D002DD86B9F0004823A /* SwiftyJSON in Frameworks */,
+				451A5D032DD86C1E0004823A /* Reachability in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		007629B4A2F541A5952A970D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				5CAF1244BDB6D219620284D3 /* Pods_WebService.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		4521A004222A9E2800DF283B /* Swime */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,8 +107,6 @@
 			children = (
 				45EA9A9120B3328300C76756 /* WebService */,
 				45EA9A9020B3328300C76756 /* Products */,
-				AE8CF2EC3C2A5F18DC50A463 /* Pods */,
-				007629B4A2F541A5952A970D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -265,15 +254,6 @@
 			path = CustomView;
 			sourceTree = "<group>";
 		};
-		AE8CF2EC3C2A5F18DC50A463 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				C66573313EA1C0CDDDE7C5D5 /* Pods-WebService.debug.xcconfig */,
-				A9FF3578B50DA948BB7670BA /* Pods-WebService.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -281,11 +261,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 45EA9AA120B3328400C76756 /* Build configuration list for PBXNativeTarget "WebService" */;
 			buildPhases = (
-				615A914155E98D3AA1EF95CE /* [CP] Check Pods Manifest.lock */,
 				45EA9A8B20B3328300C76756 /* Sources */,
 				45EA9A8C20B3328300C76756 /* Frameworks */,
 				45EA9A8D20B3328300C76756 /* Resources */,
-				8CDFBBCA8334195924F64596 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -321,6 +299,10 @@
 				Base,
 			);
 			mainGroup = 45EA9A8620B3328300C76756;
+			packageReferences = (
+				451A5CFE2DD86B9F0004823A /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+				451A5D012DD86C1E0004823A /* XCRemoteSwiftPackageReference "Reachability" */,
+			);
 			productRefGroup = 45EA9A9020B3328300C76756 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -345,47 +327,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		615A914155E98D3AA1EF95CE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WebService-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8CDFBBCA8334195924F64596 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-WebService/Pods-WebService-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebService/Pods-WebService-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		45EA9A8B20B3328300C76756 /* Sources */ = {
@@ -554,13 +495,12 @@
 		};
 		45EA9AA220B3328400C76756 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C66573313EA1C0CDDDE7C5D5 /* Pods-WebService.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 29G6UMP274;
 				INFOPLIST_FILE = WebService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -575,13 +515,12 @@
 		};
 		45EA9AA320B3328400C76756 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9FF3578B50DA948BB7670BA /* Pods-WebService.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 29G6UMP274;
 				INFOPLIST_FILE = WebService/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -616,6 +555,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		451A5CFE2DD86B9F0004823A /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+		451A5D012DD86C1E0004823A /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		451A5CFF2DD86B9F0004823A /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 451A5CFE2DD86B9F0004823A /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+		451A5D022DD86C1E0004823A /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 451A5D012DD86C1E0004823A /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 45EA9A8720B3328300C76756 /* Project object */;
 }

@@ -15,16 +15,22 @@ class ReachabilityManager: NSObject {
     
     // 3. Boolean to track network reachability
     var isNetworkAvailable : Bool {
-        return reachabilityStatus != .none
+        return reachabilityStatus != .unavailable
     }
     
     // 4. Tracks current NetworkStatus (notReachable, reachableViaWiFi, reachableViaWWAN)
-    var reachabilityStatus: Reachability.Connection = .none
+    var reachabilityStatus: Reachability.Connection {
+        do {
+            let reachability = try Reachability()
+            return reachability.connection
+        } catch {
+            debugPrint("Could not create rechability instance with error: \(error.localizedDescription)")
+            return .unavailable
+        }
+    }
     
     // 5. Reachibility instance for Network status monitoring
-    let reachability = Reachability()!
-    
-    
+//    let reachability = Reachability()
     
     
     /// Called whenever there is a change in NetworkReachibility Status
@@ -38,7 +44,7 @@ class ReachabilityManager: NSObject {
         
         let reachability = notification.object as! Reachability
         switch reachability.connection {
-        case .none:
+        case .unavailable:
             debugPrint("Network became unreachable")
             self.showNoIntenetConnectionBanner()
         case .wifi:
@@ -88,12 +94,15 @@ class ReachabilityManager: NSObject {
     /// Starts monitoring the network availability status
     func startMonitoring() {
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.reachabilityChanged),
-                                               name: Notification.Name.reachabilityChanged,
-                                               object: reachability)
+        
         do{
+            let reachability = try Reachability()
             try reachability.startNotifier()
+            
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(self.reachabilityChanged),
+                                                   name: Notification.Name.reachabilityChanged,
+                                                   object: reachability)
         }catch{
             debugPrint("Could not start reachability notifier")
         }
@@ -101,8 +110,16 @@ class ReachabilityManager: NSObject {
     
     /// Stops monitoring the network availability status
     func stopMonitoring(){
-        reachability.stopNotifier()
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.reachabilityChanged,
-                                                  object: reachability)
+        
+        do {
+            let reachability = try Reachability()
+            reachability.stopNotifier()
+            NotificationCenter.default.removeObserver(self, name: Notification.Name.reachabilityChanged,
+                                                      object: reachability)
+        } catch {
+            debugPrint("Could not stop reachability notifier with error: \(error.localizedDescription)")
+        }
+        
+        
     }
 }
